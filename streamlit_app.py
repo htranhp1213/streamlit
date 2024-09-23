@@ -5,9 +5,17 @@ import math
 
 st.title("Data App Assignment, on Oct 7th")
 
+# Load and display data
 st.write("### Input Data and Examples")
 df = pd.read_csv("Superstore_Sales_utf8.csv", parse_dates=True)
 st.dataframe(df)
+
+# Add a drop-down for Category using st.selectbox
+selected_category = st.selectbox(
+    label="Select a Category",
+    options=df['Category'].unique(),
+    placeholder="Choose a Category"
+)
 
 # This bar chart will not have solid bars--but lines--because the detail data is being graphed independently
 st.bar_chart(df, x="Category", y="Sales")
