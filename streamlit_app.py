@@ -18,11 +18,11 @@ selected_category = st.selectbox(
 )
 
 # Add a multi-select for Sub-Category filtered by selected Category
-filtered_subcategories = df[df['Category'] == selected_category]['Sub-Category'].unique()
+filtered_subcategories = df[df['Category'] == selected_category]['Sub_Category'].unique()
 selected_subcategories = st.multiselect(
     label="Select Sub-Categories",
     options=filtered_subcategories,
-    placeholder="Choose Sub-Categories"
+    placeholder="Choose Sub_Categories"
 )
 
 # This bar chart will not have solid bars--but lines--because the detail data is being graphed independently
