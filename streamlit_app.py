@@ -35,6 +35,8 @@ if not filtered_data.empty:
     df.set_index('Order_Date', inplace=True)
     # Group sales data by month
     sales_by_month_filtered = filtered_data.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
+
+    st.dataframe(sales_by_month_filtered)
     # Show the line chart
     st.line_chart(sales_by_month_filtered.set_index('Order_Date')['Sales'])
 else:
