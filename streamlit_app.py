@@ -65,7 +65,7 @@ else:
 st.bar_chart(df, x="Category", y="Sales")
 
 # Now let's do the same graph where we do the aggregation first in Pandas... (this results in a chart with solid bars)
-st.dataframe(df.groupby("Category").sum().reset_index())
+st.dataframe(df.groupby("Category").sum())
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
 st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 
@@ -81,9 +81,10 @@ st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sale
 #st.dataframe(sales_by_month)
 
 df["Order_Date"] = pd.to_datetime(df["Order_Date"])
-category_summary = df.groupby("Category")[["Sales"]].sum().reset_index()
+
 df.reset_index(drop=True, inplace=True)
-sales_by_month = df.groupby("Category")[["Sales", "Profit"]].sum().reset_index()
+
+sales_by_month = df.groupby("Category")[["Sales"]].sum().reset_index()
 
 # Display the aggregated dataframe
 st.dataframe(sales_by_month)
