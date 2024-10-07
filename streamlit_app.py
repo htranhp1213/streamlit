@@ -38,7 +38,7 @@ if not filtered_data.empty:
 
     st.dataframe(sales_by_month_filtered)
     # Show the line chart
-    st.line_chart(sales_by_month_filtered.set_index('Order_Date')['Sales'])
+    st.line_chart(sales_by_month_filtered)
 else:
     st.write("Please select one sub-category")
     
