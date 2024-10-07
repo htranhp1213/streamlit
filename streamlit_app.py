@@ -64,10 +64,6 @@ else:
 # This bar chart will not have solid bars--but lines--because the detail data is being graphed independently
 st.bar_chart(df, x="Category", y="Sales")
 
-df["Order_Date"] = pd.to_datetime(df["Order_Date"])
-
-df.reset_index(drop=True, inplace=True)
-
 # Now let's do the same graph where we do the aggregation first in Pandas... (this results in a chart with solid bars)
 st.dataframe(df.groupby("Category").sum())
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
@@ -75,23 +71,15 @@ st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sale
 
 # Aggregating by time
 # Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
-#df["Order_Date"] = pd.to_datetime(df["Order_Date"])
-#df.set_index('Order_Date', inplace=True)
+df["Order_Date"] = pd.to_datetime(df["Order_Date"])
+df.set_index('Order_Date', inplace=True)
 
 # Here the Grouper is using our newly set index to group by Month ('M')
-#sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
+sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
 # Now group by Category and sum the Sales and Profit
-
-#st.dataframe(sales_by_month)
-
-df["Order_Date"] = pd.to_datetime(df["Order_Date"])
-
-df.reset_index(drop=True, inplace=True)
-
-sales_by_month = df.groupby("Category")[["Sales"]].sum().reset_index()
-
-# Display the aggregated dataframe
 st.dataframe(sales_by_month)
+
+
 
 
 # Here the grouped months are the index and automatically used for the x axis
