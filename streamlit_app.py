@@ -26,6 +26,10 @@ selected_subcategories = st.multiselect(
 )
 
 # 3. Show a line chart of sales for the selected items in 
+# Function to plot sales line chart
+def plot_sales_line_chart(data, title):
+    sales_by_month = data.groupby(pd.Grouper(freq='M', key='Order_Date')).sum().reset_index()
+    st.line_chart(sales_by_month, x='Order_Date', y='Sales', title=title)
 # Filter the data based on selected sub-categories
 filtered_data = df[df['Sub_Category'].isin(selected_subcategories)]
 if not filtered_data.empty:
@@ -35,7 +39,7 @@ if not filtered_data.empty:
     df.set_index('Order_Date', inplace=True)
     plot_sales_line_chart(filtered_data, title=f"Sales for {', '.join(selected_subcategories)}")
 else:
-    st.write("No data available for the selected sub-categories.")
+    st.write("Please select one sub-category")
     
 
 # This bar chart will not have solid bars--but lines--because the detail data is being graphed independently
