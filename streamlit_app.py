@@ -34,10 +34,10 @@ if not filtered_data.empty:
     df["Order_Date"] = pd.to_datetime(df["Order_Date"])
     filtered_data["Order_Date"] = pd.to_datetime(filtered_data["Order_Date"])
     # Set Order_Date as the index for both df and filtered_data
-    #filtered_data.set_index('Order_Date', inplace=True)
+    filtered_data.set_index('Order_Date', inplace=True)
     # Group sales data by month
-    #sales_by_month_filtered = filtered_data.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
-    sales_by_month_filtered = filtered_data.resample('M', on='Order_Date').sum()
+    sales_by_month_filtered = filtered_data.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
+    #sales_by_month_filtered = filtered_data.resample('M', on='Order_Date').sum()
     
     # Show the line chart
     st.line_chart(sales_by_month_filtered['Sales'])
@@ -65,7 +65,7 @@ else:
 st.bar_chart(df, x="Category", y="Sales")
 
 # Now let's do the same graph where we do the aggregation first in Pandas... (this results in a chart with solid bars)
-st.dataframe(df.groupby("Category").sum())
+st.dataframe(df.groupby("Category").sum().reset_index())
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
 st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 
@@ -74,8 +74,8 @@ st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sale
 df["Order_Date"] = pd.to_datetime(df["Order_Date"])
 df.set_index('Order_Date', inplace=True)
 # Here the Grouper is using our newly set index to group by Month ('M')
-sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
-
+#sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
+sales_by_month = df.resample('M')['Sales'].sum()
 st.dataframe(sales_by_month)
 
 # Here the grouped months are the index and automatically used for the x axis
