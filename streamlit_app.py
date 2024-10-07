@@ -61,6 +61,7 @@ st.dataframe(sales_by_month)
 
 # Here the grouped months are the index and automatically used for the x axis
 st.line_chart(sales_by_month, y="Sales")
+plot_sales_line_chart(df, title="Overall Sales by Month")
 
 st.write("## Your additions")
 st.write("### (1) add a drop down for Category (https://docs.streamlit.io/library/api-reference/widgets/st.selectbox)")
