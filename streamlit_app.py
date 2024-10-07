@@ -28,7 +28,7 @@ selected_subcategories = st.multiselect(
 # 3. Show a line chart of sales for the selected items in 
 # Filter the data based on selected sub-categories
 filtered_data = df[df['Sub_Category'].isin(selected_subcategories)]
-if not filetered_data.empty:
+if not filtered_data.empty:
     # Aggregating by time
     # Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
     df["Order_Date"] = pd.to_datetime(df["Order_Date"])
