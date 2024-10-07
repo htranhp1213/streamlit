@@ -71,14 +71,23 @@ st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sale
 
 # Aggregating by time
 # Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
-df["Order_Date"] = pd.to_datetime(df["Order_Date"])
+#df["Order_Date"] = pd.to_datetime(df["Order_Date"])
 #df.set_index('Order_Date', inplace=True)
-df.reset_index(drop=True, inplace=True)
+
 # Here the Grouper is using our newly set index to group by Month ('M')
 #sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
 # Now group by Category and sum the Sales and Profit
+
+#st.dataframe(sales_by_month)
+
+df["Order_Date"] = pd.to_datetime(df["Order_Date"])
 category_summary = df.groupby("Category")[["Sales"]].sum().reset_index()
+df.reset_index(drop=True, inplace=True)
+sales_by_month = df.groupby("Category")[["Sales", "Profit"]].sum().reset_index()
+
+# Display the aggregated dataframe
 st.dataframe(sales_by_month)
+
 
 # Here the grouped months are the index and automatically used for the x axis
 st.line_chart(sales_by_month, y="Sales")
