@@ -38,9 +38,24 @@ if not filtered_data.empty:
     # Group sales data by month
     sales_by_month_filtered = filtered_data.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
 
-    
     # Show the line chart
     st.line_chart(sales_by_month_filtered)
+
+    # 4. Show the metrics for the selected sub-categories
+    total_sales = filtered_data['Sales'].sum()
+    total_profit = filtered_data['Profit'].sum()
+    overall_profit_margin = (total_profit / total_sales) * 100 if total_sales != 0 else 0
+
+    # Calculate the average profit margin across all categories
+    total_sales_all = df['Sales'].sum()
+    total_profit_all = df['Profit'].sum()
+    overall_profit_margin_all = (total_profit_all / total_sales_all) * 100 if total_sales_all != 0 else 0
+
+    # Show metrics with a delta for overall profit margin
+    st.metric(label="Total Sales", value=f"${total_sales:,.2f}")
+    st.metric(label="Total Profit", value=f"${total_profit:,.2f}")
+    st.metric(label="Profit Margin (%)", value=f"{overall_profit_margin:.2f}%", delta=f"{overall_profit_margin - overall_profit_margin_all:.2f}%")
+
 else:
     st.write("Please select one sub-category")
     
