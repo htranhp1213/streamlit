@@ -32,11 +32,13 @@ if not filtered_data.empty:
     # Aggregating by time
     # Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
     df["Order_Date"] = pd.to_datetime(df["Order_Date"])
-    df.set_index('Order_Date', inplace=True)
+    filtered_data["Order_Date"] = pd.to_datetime(filtered_data["Order_Date"])
+    # Set Order_Date as the index for both df and filtered_data
+    filtered_data.set_index('Order_Date', inplace=True)
     # Group sales data by month
     sales_by_month_filtered = filtered_data.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
 
-    st.dataframe(sales_by_month_filtered)
+    
     # Show the line chart
     st.line_chart(sales_by_month_filtered)
 else:
