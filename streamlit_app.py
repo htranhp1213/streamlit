@@ -26,10 +26,6 @@ selected_subcategories = st.multiselect(
 )
 
 # 3. Show a line chart of sales for the selected items in 
-# Function to plot sales line chart
-def plot_sales_line_chart(data, title):
-    sales_by_month = data.groupby(pd.Grouper(freq='M', key='Order_Date')).sum().reset_index()
-    st.line_chart(sales_by_month, x='Order_Date', y='Sales', title=title)
 # Filter the data based on selected sub-categories
 filtered_data = df[df['Sub_Category'].isin(selected_subcategories)]
 if not filtered_data.empty:
@@ -37,7 +33,8 @@ if not filtered_data.empty:
     # Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
     df["Order_Date"] = pd.to_datetime(df["Order_Date"])
     df.set_index('Order_Date', inplace=True)
-    plot_sales_line_chart(filtered_data, title=f"Sales for {', '.join(selected_subcategories)}")
+    # Show the line chart
+    st.line_chart(sales_by_month_filtered.set_index('Order_Date')['Sales'])
 else:
     st.write("Please select one sub-category")
     
@@ -61,7 +58,6 @@ st.dataframe(sales_by_month)
 
 # Here the grouped months are the index and automatically used for the x axis
 st.line_chart(sales_by_month, y="Sales")
-plot_sales_line_chart(df, title="Overall Sales by Month")
 
 st.write("## Your additions")
 st.write("### (1) add a drop down for Category (https://docs.streamlit.io/library/api-reference/widgets/st.selectbox)")
