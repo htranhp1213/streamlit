@@ -10,20 +10,33 @@ st.write("### Input Data and Examples")
 df = pd.read_csv("Superstore_Sales_utf8.csv", parse_dates=True)
 st.dataframe(df)
 
-# Add a drop-down for Category using st.selectbox
+# 1.Add a drop-down for Category using st.selectbox
 selected_category = st.selectbox(
     label="Select a Category",
     options=df['Category'].unique(),
     placeholder="Choose a Category"
 )
 
-# Add a multi-select for Sub-Category filtered by selected Category
+# 2. Add a multi-select for Sub-Category filtered by selected Category
 filtered_subcategories = df[df['Category'] == selected_category]['Sub_Category'].unique()
 selected_subcategories = st.multiselect(
     label="Select Sub-Categories",
     options=filtered_subcategories,
     placeholder="Choose Sub_Categories"
 )
+
+# 3. Show a line chart of sales for the selected items in 
+# Filter the data based on selected sub-categories
+filtered_data = df[df['Sub_Category'].isin(selected_subcategories)]
+if not filetered_data.empty:
+    # Aggregating by time
+    # Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
+    df["Order_Date"] = pd.to_datetime(df["Order_Date"])
+    df.set_index('Order_Date', inplace=True)
+    plot_sales_line_chart(filtered_data, title=f"Sales for {', '.join(selected_subcategories)}")
+else:
+    st.write("No data available for the selected sub-categories.")
+    
 
 # This bar chart will not have solid bars--but lines--because the detail data is being graphed independently
 st.bar_chart(df, x="Category", y="Sales")
