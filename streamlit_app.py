@@ -34,12 +34,13 @@ if not filtered_data.empty:
     df["Order_Date"] = pd.to_datetime(df["Order_Date"])
     filtered_data["Order_Date"] = pd.to_datetime(filtered_data["Order_Date"])
     # Set Order_Date as the index for both df and filtered_data
-    filtered_data.set_index('Order_Date', inplace=True)
+    #filtered_data.set_index('Order_Date', inplace=True)
     # Group sales data by month
-    sales_by_month_filtered = filtered_data.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
-
+    #sales_by_month_filtered = filtered_data.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
+    sales_by_month_filtered = filtered_data.resample('M', on='Order_Date').sum()
+    
     # Show the line chart
-    st.line_chart(sales_by_month_filtered)
+    st.line_chart(sales_by_month_filtered['Sales'])
 
     # 4. Show the metrics for the selected sub-categories
     total_sales = filtered_data['Sales'].sum()
